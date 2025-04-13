@@ -1,0 +1,9 @@
+Now:
+* Begin the thread in a 'begin' function and not directly to the server code
+* Being able to exec any shell command or binary with any kind of parameters
+* Call the exec function after receiving data from the server
+* Use the cleanup function from UMH to delete the output and stderr files
+
+Later:
+* Encrypt data over the network
+* Add a password

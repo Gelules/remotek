@@ -1,0 +1,17 @@
+REMOTEK: Research Environment MOdule for Operational Task Execution from Kernel
+
+It is a pedagogical project to send commands to a Linux module from a server
+with maybe more features to come!
+
+Usage:
+$ make
+$ sudo insmod remotek.ko ip=$IP port=$PORT
+...
+$ sudo rmmod remotek
+
+Default ip is 127.0.0.1 and default port is 4242.
+
+Do not use IPv6 (yet?).
+
+You need a running server (netcat for example) sending shell commands to receive
+the execution results.

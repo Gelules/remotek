@@ -1,0 +1,10 @@
+tags
+*.o
+*.ko
+*.mod.c
+*.mod.o
+*.symvers
+*.order
+*.mod
+*.cmd
+.*.cmd
