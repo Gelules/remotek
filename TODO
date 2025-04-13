@@ -1,9 +1,11 @@
 Now:
 * Begin the thread in a 'begin' function and not directly to the server code
-* Being able to exec any shell command or binary with any kind of parameters
-* Call the exec function after receiving data from the server
+* Use a buffer to send the data in one time only
 * Use the cleanup function from UMH to delete the output and stderr files
 
-Later:
+Features:
 * Encrypt data over the network
-* Add a password
+* Add a password protection
+* Hide my module and its presence on the system to not bother the sysadmin
+* Make the module persistent after reboot
+* Upload and download files

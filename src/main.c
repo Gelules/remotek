@@ -10,6 +10,7 @@
 
 #define BUF_SIZE 1025
 
+struct globals *global = NULL;
 struct task_struct *thread_client = NULL;
 struct socket *sock = NULL;
 char *ip = "127.0.0.1";
@@ -23,13 +24,14 @@ static __init int remote_init(void)
 {
     pr_info("remotek: insmoded\n");
 
-    struct globals global = { 0 };
-    global.ip = ip;
-    global.port = port;
-    global.sock = sock;
-    global.thread = thread_client;
+    global = kmalloc(sizeof (struct globals), GFP_KERNEL);
 
-    thread_client = kthread_run(communicate, &global, "remotek");
+    global->ip = ip;
+    global->port = port;
+    global->sock = sock;
+    global->thread = thread_client;
+
+    thread_client = kthread_run(communicate, global, "remotek");
 
 
     if (IS_ERR(thread_client))
@@ -53,6 +55,8 @@ static void __exit remote_exit(void)
 
     if (sock)
         sock_release(sock);
+
+    kfree(global);
 
     pr_info("remotek: rmmoded\n");
 }
