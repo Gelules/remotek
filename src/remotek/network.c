@@ -58,6 +58,18 @@ int communicate(void *data)
             continue;
         }
 
+        vec.iov_base = "remotek";
+        vec.iov_len = 7;
+
+        if ((ret = kernel_sendmsg(sock, &msg, &vec, 1, vec.iov_len)) < 0)
+        {
+            pr_err("remotek: error sending exit status: %d\n", ret);
+            sock_release(sock);
+            sock = NULL;
+            break;
+        }
+
+
         while (kthread_should_stop() == 0)
         {
             rvec.iov_base = buf;
@@ -71,8 +83,12 @@ int communicate(void *data)
                 break;
             }
 
-            buf[ret - 1] = '\0';
-            pr_info("remotek: received: %s\n", buf);
+            if (buf[ret - 1] == '\n')
+                buf[ret - 1] = '\0';
+            else
+                buf[ret] = '\0';
+
+            pr_info("remotek: received: '%s'\n", buf);
 
             exit_status = exec(buf);
             pr_info("remotek: exit status: %d\n", exit_status);
