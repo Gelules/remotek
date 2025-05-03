@@ -7,7 +7,9 @@ SERVER_SRC = src/server/server.c
 SERVER_BIN = $(SERVER_SRC:.c=)
 SERVER_TARGET = server
 
-modules: server
+.PHONY: server
+
+modules:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) $@
 
 clean:
