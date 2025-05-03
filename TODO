@@ -1,6 +1,7 @@
 Now:
 * Begin the thread in a 'begin' function and not directly to the server code
 * Use a buffer to send the data in one time only
+* Send metadata about the buffer size to loop until all data has been received
 * Use the cleanup function from UMH to delete the output and stderr files
 
 Features:
