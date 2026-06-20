@@ -50,6 +50,12 @@ int main(int argc, char *argv[])
     clientfd = accept(sockfd, NULL, NULL);
 
     len = recv(clientfd, buff, sizeof (buff) - 1, 0);
+    if (len <= 0)
+    {
+        close(sockfd);
+        close(clientfd);
+        return 2;
+    }
     buff[len] = '\0';
     if (strncmp(buff, "remotek", 7) != 0)
     {
