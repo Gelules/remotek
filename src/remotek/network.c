@@ -5,6 +5,7 @@
 #include <linux/inet.h>
 #include <linux/kthread.h>
 #include <linux/net.h>
+#include <net/sock.h>
 
 static void *convert(void *ptr)
 {
@@ -44,6 +45,10 @@ int communicate(void *data)
             continue;
         }
 
+        // Wake recv() ~twice a second so the loop can re-check kthread_should_stop();
+        // rmmod then returns within ~500ms instead of blocking on an idle socket.
+        sock->sk->sk_rcvtimeo = msecs_to_jiffies(500);
+
         addr.sin_family = AF_INET;
         addr.sin_port = htons(global->port);
 
@@ -76,6 +81,9 @@ int communicate(void *data)
 
             if ((ret = kernel_recvmsg(sock, &rmsg, &rvec, 1, BUF_SIZE - 1, 0)) <= 0)
             {
+                if (ret == -EAGAIN)
+                    continue;
+
                 pr_warn("remotek: connection lost or closed\n");
                 sock_release(sock);
                 sock = NULL;
@@ -211,6 +219,12 @@ int communicate(void *data)
 
             kfree(bufout);
             kfree(buferr);
+        }
+
+        if (sock)
+        {
+            sock_release(sock);
+            sock = NULL;
         }
     }
     return 0;
