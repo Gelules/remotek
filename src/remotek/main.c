@@ -29,7 +29,6 @@ static __init int remote_init(void)
     global->ip = ip;
     global->port = port;
     global->sock = sock;
-    global->thread = thread_client;
 
     thread_client = kthread_run(communicate, global, "remotek");
 

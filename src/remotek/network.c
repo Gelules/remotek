@@ -32,7 +32,6 @@ int communicate(void *data)
     if ((ret = in4_pton(global->ip, -1, ip_binary, -1, NULL)) == 0)
     {
         pr_err("remotek: error converting the IPv4 address: %s(%d)\n", global->ip, ret);
-        kthread_stop(global->thread);
         return 1;
     }
 
