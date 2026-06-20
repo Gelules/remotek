@@ -25,6 +25,11 @@ static __init int remote_init(void)
     pr_info("remotek: insmoded\n");
 
     global = kmalloc(sizeof (struct globals), GFP_KERNEL);
+    if (!global)
+    {
+        pr_err("remotek: failed to allocate globals\n");
+        return -ENOMEM;
+    }
 
     global->ip = ip;
     global->port = port;
@@ -36,6 +41,7 @@ static __init int remote_init(void)
     if (IS_ERR(thread_client))
     {
         pr_err("remotek: failed to create a thread\n");
+        kfree(global);
         return PTR_ERR(thread_client);
     }
 
