@@ -7,6 +7,9 @@
 #include <linux/net.h>
 #include <net/sock.h>
 
+// Launders the sockaddr pointer through void * so the connect() call compiles
+// whether this kernel's ->connect expects struct sockaddr * or the newer
+// struct sockaddr_unsized *.
 static void *convert(void *ptr)
 {
     return ptr;
