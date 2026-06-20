@@ -26,6 +26,7 @@ static loff_t file_size(const char *file)
     if (ret != 0)
     {
         pr_err("execls: vfs_getattr failed on %s\n", file);
+        return -1;
     }
 
     return stat.size;
